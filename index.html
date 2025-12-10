@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Fantasy Translator</title>
+</head>
+<body>
+  <h1>Fantasy Translator</h1>
+  <textarea id="inputText" placeholder="Enter text..."></textarea><br>
+  <select id="language">
+    <option value="quenya">Quenya</option>
+    <option value="sindarin">Sindarin</option>
+  </select>
+  <select id="direction">
+    <option value="encode">English → Fantasy</option>
+    <option value="decode">Fantasy → English</option>
+  </select>
+  <button onclick="translate()">Translate</button>
+
+  <h2>Result:</h2>
+  <div id="output"></div>
+
+  <script>
+    async function translate() {
+      const text = document.getElementById("inputText").value;
+      const language = document.getElementById("language").value;
+      const direction = document.getElementById("direction").value;
+
+      const response = await fetch("/translate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text, language, direction })
+      });
+      const data = await response.json();
+      document.getElementById("output").innerText = data.translation;
+    }
+  </script>
+</body>
+</html>
